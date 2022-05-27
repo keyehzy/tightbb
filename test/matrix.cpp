@@ -50,3 +50,16 @@ TEST(test_matrix, subtract_matrices) {
   EXPECT_EQ(res.get(1, 0), 0.0);
   EXPECT_EQ(res.get(1, 1), 3.0);
 }
+
+TEST(test_matrix, comparison_between_matrices) {
+  {
+    Matrix<double, 2, 2> m1{{1.0, 2.0}, {3.0, 4.0}};
+    Matrix<double, 2, 2> m2{{1.0, 2.0}, {3.0, 4.0}};
+    EXPECT_TRUE(m1 == m2);
+  }
+  {
+    Matrix<double, 2, 2> m1{{1.0, 3.0}, {3.0, 4.0}};
+    Matrix<double, 2, 2> m2{{1.0, 2.0}, {3.0, 4.0}};
+    EXPECT_TRUE(m1 != m2);
+  }
+}

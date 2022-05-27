@@ -43,6 +43,10 @@ class Matrix {
 
   Matrix<T, W, H> operator-(Matrix<T, W, H> const& m) const;
 
+  bool operator==(Matrix<T, W, H> const& m) const;
+
+  bool operator!=(Matrix<T, W, H> const& m) const;
+
  private:
   template <std::size_t... i>
   std::array<T, W> make_array_impl(std::initializer_list<T> list,
@@ -63,6 +67,7 @@ template <typename T, std::size_t W, std::size_t H>
 T& Matrix<T, W, H>::get(std::size_t i, std::size_t j) {
   return this->data_.at(i).at(j);
 }
+
 template <typename T, std::size_t W, std::size_t H>
 Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
   Matrix<T, W, H> new_m{};
@@ -73,6 +78,7 @@ Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
   }
   return new_m;
 }
+
 template <typename T, std::size_t W, std::size_t H>
 Matrix<T, W, H> Matrix<T, W, H>::operator-(const Matrix<T, W, H>& m) const {
   Matrix<T, W, H> new_m{};
@@ -82,6 +88,20 @@ Matrix<T, W, H> Matrix<T, W, H>::operator-(const Matrix<T, W, H>& m) const {
     }
   }
   return new_m;
+}
+template <typename T, std::size_t W, std::size_t H>
+bool Matrix<T, W, H>::operator==(const Matrix<T, W, H>& m) const {
+  for (int i = 0; i < H; i++) {
+    for (int j = 0; j < W; j++) {
+      if (this->get(i, j) != m.get(i, j)) return false;
+    }
+  }
+  return true;
+}
+template <typename T, std::size_t W, std::size_t H>
+bool Matrix<T, W, H>::operator!=(const Matrix<T, W, H>& m) const {
+  bool ok = *this == m;
+  return !ok;
 }
 
 #endif  // TIGHTB_MATRIX_H

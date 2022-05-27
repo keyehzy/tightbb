@@ -76,7 +76,7 @@ TEST(test_vector, compare_vectors) {
   {
     Vec<double, 2> v1{-1.0, 2.0};
     Vec<double, 2> v2{1.0, 2.0};
-    EXPECT_FALSE(v1 == v2);
+    EXPECT_TRUE(v1 != v2);
   }
 }
 
