@@ -36,6 +36,9 @@ public:
 
     [[nodiscard]] double norm() const;
 
+    Vec<S> operator*(double p) const;
+
+
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
 
 private:
@@ -86,5 +89,22 @@ double Vec<S>::norm() const {
   double dot = this->dot(*this);
   return sqrt(dot);
 }
+
+template<int S>
+Vec<S> Vec<S>::operator*(double p) const {
+  Vec<S> new_v(S);
+
+  for (int i = 0; i < S; i++) {
+    new_v[i] = p * this->data_[i];
+  }
+
+  return new_v;
+}
+
+template<int S>
+Vec<S> operator*(double p, Vec<S> v) {
+  return v * p;
+}
+
 
 #endif //TIGHTB_VECTOR_H

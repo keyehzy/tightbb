@@ -51,3 +51,17 @@ TEST(test_vector, norm_vectors) {
   Vec<2> v{1.0, 2.0};
   EXPECT_THAT(v.norm(), DoubleEq(sqrt(5)));
 }
+
+TEST(test_vector, vector_times_scalar) {
+  Vec<2> v{1.0, 2.0};
+
+  {
+    Vec<2> prodv = 2.0 * v;
+    EXPECT_THAT(prodv.data(), ElementsAre(2.0, 4.0));
+  }
+
+  {
+    Vec<2> prodv = v * 2.0;
+    EXPECT_THAT(prodv.data(), ElementsAre(2.0, 4.0));
+  }
+}
