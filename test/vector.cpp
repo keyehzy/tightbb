@@ -14,16 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
 #include <tightb/vector.h>
 
-using ::testing::ElementsAre;
 using ::testing::DoubleEq;
+using ::testing::ElementsAre;
 
-TEST(test_vector, declaration) {
-  Vec<2> v = {1.0, 2.0};
-}
+TEST(test_vector, declaration) { Vec<2> v = {1.0, 2.0}; }
 
 TEST(test_vector, add_two_vectors) {
   Vec<2> v1{1.0, 2.0};

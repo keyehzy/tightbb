@@ -14,4 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include <tightb/vector.h>
+#ifndef TIGHTB_GRAPH_H
+#define TIGHTB_GRAPH_H
+
+class Graph {
+ public:
+};
+
+#endif  // TIGHTB_GRAPH_H

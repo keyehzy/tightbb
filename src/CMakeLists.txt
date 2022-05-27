@@ -23,5 +23,5 @@ target_link_libraries(tightb PRIVATE tightb-lib)
 add_library(
         tightb-lib
         vector.cpp
-        tightb/vector.h)
+        tightb/vector.h graph.cpp tightb/graph.h assert.cpp tightb/assert.h)
 target_include_directories(tightb-lib PUBLIC .)
