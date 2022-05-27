@@ -28,18 +28,19 @@ public:
 
     double &operator[](int i);
 
-    Vec<S> operator+(Vec<S> v) const;
+    double operator[](int i) const;
 
-    Vec<S> operator-(Vec<S> v) const;
+    Vec<S> operator+(Vec<S> const &v) const;
 
-    [[nodiscard]] double dot(Vec<S> v) const;
+    Vec<S> operator-(Vec<S> const &v) const;
+
+    [[nodiscard]] double dot(Vec<S> const &v) const;
 
     [[nodiscard]] double norm() const;
 
     Vec<S> operator*(double p) const;
 
-    Vec<S> proj(Vec<S> v) const;
-
+    Vec<S> proj(Vec<S> const &v) const;
 
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
 
@@ -54,7 +55,13 @@ double &Vec<S>::operator[](int i) {
 }
 
 template<int S>
-Vec<S> Vec<S>::operator+(Vec<S> v) const {
+double Vec<S>::operator[](int i) const {
+  assert(i >= 0 && i < S);
+  return this->data_[i];
+}
+
+template<int S>
+Vec<S> Vec<S>::operator+(Vec<S> const &v) const {
   Vec<S> new_v(S);
 
   for (int i = 0; i < S; i++) {
@@ -65,7 +72,7 @@ Vec<S> Vec<S>::operator+(Vec<S> v) const {
 }
 
 template<int S>
-Vec<S> Vec<S>::operator-(Vec<S> v) const {
+Vec<S> Vec<S>::operator-(Vec<S> const &v) const {
   Vec<S> new_v(S);
 
   for (int i = 0; i < S; i++) {
@@ -76,7 +83,7 @@ Vec<S> Vec<S>::operator-(Vec<S> v) const {
 }
 
 template<int S>
-double Vec<S>::dot(Vec<S> v) const {
+double Vec<S>::dot(Vec<S> const &v) const {
   double dot = 0.0;
 
   for (int i = 0; i < S; i++) {
@@ -104,12 +111,12 @@ Vec<S> Vec<S>::operator*(double p) const {
 }
 
 template<int S>
-Vec<S> operator*(double p, Vec<S> v) {
+Vec<S> operator*(double p, Vec<S> const &v) {
   return v * p;
 }
 
 template<int S>
-Vec<S> Vec<S>::proj(Vec<S> v) const {
+Vec<S> Vec<S>::proj(Vec<S> const &v) const {
   double scalar_projection = this->dot(v) / v.dot(v);
   return scalar_projection * v;
 }
