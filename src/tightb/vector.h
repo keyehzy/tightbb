@@ -38,6 +38,8 @@ public:
 
     Vec<S> operator*(double p) const;
 
+    Vec<S> proj(Vec<S> v) const;
+
 
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
 
@@ -106,5 +108,10 @@ Vec<S> operator*(double p, Vec<S> v) {
   return v * p;
 }
 
+template<int S>
+Vec<S> Vec<S>::proj(Vec<S> v) const {
+  double scalar_projection = this->dot(v) / v.dot(v);
+  return scalar_projection * v;
+}
 
 #endif //TIGHTB_VECTOR_H

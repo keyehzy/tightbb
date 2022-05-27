@@ -65,3 +65,17 @@ TEST(test_vector, vector_times_scalar) {
     EXPECT_THAT(prodv.data(), ElementsAre(2.0, 4.0));
   }
 }
+
+TEST(test_vector, vector_projection) {
+  {
+    Vec<2> v1{1.0, -1.0};
+    Vec<2> v2{1.0, 1.0};
+    EXPECT_THAT(v1.proj(v2).data(), ElementsAre(0.0, 0.0));
+  }
+
+  {
+    Vec<2> v1{1.0, -2.0};
+    Vec<2> v2{1.0, 1.0};
+    EXPECT_THAT(v1.proj(v2).data(), ElementsAre(-0.5, -0.5));
+  }
+}
