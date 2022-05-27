@@ -34,6 +34,7 @@ public:
 
     [[nodiscard]] double dot(Vec<S> v) const;
 
+    [[nodiscard]] double norm() const;
 
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
 
@@ -78,6 +79,12 @@ double Vec<S>::dot(Vec<S> v) const {
   }
 
   return dot;
+}
+
+template<int S>
+double Vec<S>::norm() const {
+  double dot = this->dot(*this);
+  return sqrt(dot);
 }
 
 #endif //TIGHTB_VECTOR_H

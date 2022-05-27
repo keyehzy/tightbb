@@ -19,6 +19,7 @@
 #include <tightb/vector.h>
 
 using ::testing::ElementsAre;
+using ::testing::DoubleEq;
 
 TEST(test_vector, declaration) {
   Vec<2> v = {1.0, 2.0};
@@ -44,4 +45,9 @@ TEST(test_vector, dot_product_of_two_vectors) {
   Vec<2> v2{2.0, 3.0};
   double dot = v1.dot(v2);
   EXPECT_THAT(dot, 8.0);
+}
+
+TEST(test_vector, norm_vectors) {
+  Vec<2> v{1.0, 2.0};
+  EXPECT_THAT(v.norm(), DoubleEq(sqrt(5)));
 }
