@@ -22,12 +22,13 @@ TEST(test_matrix, declaration) {
   Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
 }
 
-TEST(test_matrix, acessor) {
+TEST(test_matrix, accessor) {
   Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
   EXPECT_EQ(m.get(0, 0), 1.0);
   EXPECT_EQ(m.get(0, 1), 2.0);
   EXPECT_EQ(m.get(1, 0), 3.0);
   EXPECT_EQ(m.get(1, 1), 4.0);
+  EXPECT_ANY_THROW(m.get(2, 2));
 }
 
 TEST(test_matrix, add_matrices) {

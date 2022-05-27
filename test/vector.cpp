@@ -23,6 +23,13 @@ using ::testing::ElementsAre;
 
 TEST(test_vector, declaration) { Vec<double, 2> v{1.0, 2.0}; }
 
+TEST(test_vector, accessor) {
+  Vec<double, 2> v{1.0, 2.0};
+  EXPECT_EQ(v[0], 1.0);
+  EXPECT_EQ(v[1], 2.0);
+  EXPECT_ANY_THROW(v[2]);
+}
+
 TEST(test_vector, add_two_vectors) {
   Vec<double, 2> v1{1.0, 2.0};
   Vec<double, 2> v2{2.0, 3.0};

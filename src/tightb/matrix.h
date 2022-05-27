@@ -56,16 +56,12 @@ class Matrix {
 
 template <typename T, std::size_t W, std::size_t H>
 T const& Matrix<T, W, H>::get(std::size_t i, std::size_t j) const {
-  ASSERT(i >= 0 && i < H);
-  ASSERT(j >= 0 && j < W);
-  return this->data_[i][j];
+  return this->data_.at(i).at(j);
 }
 
 template <typename T, std::size_t W, std::size_t H>
 T& Matrix<T, W, H>::get(std::size_t i, std::size_t j) {
-  ASSERT(i >= 0 && i < H);
-  ASSERT(j >= 0 && j < W);
-  return this->data_[i][j];
+  return this->data_.at(i).at(j);
 }
 template <typename T, std::size_t W, std::size_t H>
 Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {

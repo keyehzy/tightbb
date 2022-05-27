@@ -66,14 +66,12 @@ class Vec {
 
 template <typename T, std::size_t S>
 T &Vec<T, S>::operator[](int i) {
-  ASSERT(i >= 0 && i < S);
-  return this->data_[i];
+  return this->data_.at(i);
 }
 
 template <typename T, std::size_t S>
 T const &Vec<T, S>::operator[](int i) const {
-  ASSERT(i >= 0 && i < S);
-  return this->data_[i];
+  return this->data_.at(i);
 }
 
 template <typename T, std::size_t S>
