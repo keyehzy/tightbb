@@ -28,11 +28,11 @@ public:
 
     double &operator[](int i);
 
-    Vec<S> operator+(Vec<S> v);
+    Vec<S> operator+(Vec<S> v) const;
 
-    Vec<S> operator-(Vec<S> v);
+    Vec<S> operator-(Vec<S> v) const;
 
-    double operator*(Vec<S> v);
+    double operator*(Vec<S> v) const;
 
 
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
@@ -48,7 +48,7 @@ double &Vec<S>::operator[](int i) {
 }
 
 template<int S>
-Vec<S> Vec<S>::operator+(Vec<S> v) {
+Vec<S> Vec<S>::operator+(Vec<S> v) const {
   Vec<S> new_v(S);
 
   for (int i = 0; i < S; i++) {
@@ -59,7 +59,7 @@ Vec<S> Vec<S>::operator+(Vec<S> v) {
 }
 
 template<int S>
-Vec<S> Vec<S>::operator-(Vec<S> v) {
+Vec<S> Vec<S>::operator-(Vec<S> v) const {
   Vec<S> new_v(S);
 
   for (int i = 0; i < S; i++) {
@@ -70,7 +70,7 @@ Vec<S> Vec<S>::operator-(Vec<S> v) {
 }
 
 template<int S>
-double Vec<S>::operator*(Vec<S> v) {
+double Vec<S>::operator*(Vec<S> v) const {
   double dot = 0.0;
 
   for (int i = 0; i < S; i++) {
