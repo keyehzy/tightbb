@@ -19,16 +19,21 @@
 
 #include <tightb/assert.h>
 
+#include <array>
 #include <cmath>
 #include <ostream>
-#include <vector>
 
-template <int S>
+template <std::size_t S>
 class Vec {
  public:
-  Vec(const std::initializer_list<double> &list) : data_(list){};
+  Vec() = default;
+  Vec(std::initializer_list<double> list)
+      : Vec(list, std::make_index_sequence<S>()) {
+    ASSERT(list.size() == S);
+  };
 
-  explicit Vec(int i) : data_(i){};
+  template <typename... U>
+  explicit Vec(U &&...u) : data_({std::forward<U>(u)...}) {}
 
   double &operator[](int i);
 
@@ -38,6 +43,8 @@ class Vec {
 
   Vec<S> operator-(Vec<S> const &v) const;
 
+  Vec<S> operator*(double p) const;
+
   bool operator==(Vec<S> const &v) const;
 
   bool operator!=(Vec<S> const &v) const;
@@ -46,33 +53,35 @@ class Vec {
 
   [[nodiscard]] double norm() const;
 
-  Vec<S> operator*(double p) const;
-
   Vec<S> proj(Vec<S> const &v) const;
 
-  [[nodiscard]] std::vector<double> data() const { return this->data_; }
+  [[nodiscard]] std::array<double, S> data() const { return this->data_; }
 
-  [[nodiscard]] int size() const { return this->data_.size(); }
+  [[nodiscard]] std::size_t size() const { return this->data_.size(); }
 
  private:
-  std::vector<double> data_;
+  template <std::size_t... i>
+  Vec(std::initializer_list<double> list, std::index_sequence<i...>)
+      : data_({*(list.begin() + i)...}) {}
+
+  std::array<double, S> data_;
 };
 
-template <int S>
+template <std::size_t S>
 double &Vec<S>::operator[](int i) {
   ASSERT(i >= 0 && i < S);
   return this->data_[i];
 }
 
-template <int S>
+template <std::size_t S>
 double const &Vec<S>::operator[](int i) const {
   ASSERT(i >= 0 && i < S);
   return this->data_[i];
 }
 
-template <int S>
+template <std::size_t S>
 Vec<S> Vec<S>::operator+(Vec<S> const &v) const {
-  Vec<S> new_v(S);
+  Vec<S> new_v{};
 
   for (int i = 0; i < S; i++) {
     new_v[i] = this->data_[i] + v[i];
@@ -81,9 +90,9 @@ Vec<S> Vec<S>::operator+(Vec<S> const &v) const {
   return new_v;
 }
 
-template <int S>
+template <std::size_t S>
 Vec<S> Vec<S>::operator-(Vec<S> const &v) const {
-  Vec<S> new_v(S);
+  Vec<S> new_v{};
 
   for (int i = 0; i < S; i++) {
     new_v[i] = this->data_[i] - v[i];
@@ -92,7 +101,7 @@ Vec<S> Vec<S>::operator-(Vec<S> const &v) const {
   return new_v;
 }
 
-template <int S>
+template <std::size_t S>
 double Vec<S>::dot(Vec<S> const &v) const {
   double dot = 0.0;
 
@@ -103,15 +112,15 @@ double Vec<S>::dot(Vec<S> const &v) const {
   return dot;
 }
 
-template <int S>
+template <std::size_t S>
 double Vec<S>::norm() const {
   double dot = this->dot(*this);
   return std::sqrt(dot);
 }
 
-template <int S>
+template <std::size_t S>
 Vec<S> Vec<S>::operator*(double p) const {
-  Vec<S> new_v(S);
+  Vec<S> new_v{};
 
   for (int i = 0; i < S; i++) {
     new_v[i] = p * this->data_[i];
@@ -120,18 +129,18 @@ Vec<S> Vec<S>::operator*(double p) const {
   return new_v;
 }
 
-template <int S>
+template <std::size_t S>
 Vec<S> operator*(double p, Vec<S> const &v) {
   return v * p;
 }
 
-template <int S>
+template <std::size_t S>
 Vec<S> Vec<S>::proj(Vec<S> const &v) const {
   double scalar_projection = this->dot(v) / v.dot(v);
   return scalar_projection * v;
 }
 
-template <int S>
+template <std::size_t S>
 bool Vec<S>::operator==(const Vec<S> &v) const {
   for (int i = 0; i < S; i++) {
     if (this->data_[i] != v[i]) return false;
@@ -139,13 +148,13 @@ bool Vec<S>::operator==(const Vec<S> &v) const {
   return true;
 }
 
-template <int S>
+template <std::size_t S>
 bool Vec<S>::operator!=(const Vec<S> &v) const {
   bool ok = *this == v;
   return !ok;
 }
 
-template <int S>
+template <std::size_t S>
 std::ostream &operator<<(std::ostream &os, Vec<S> const &v) {
   os << "[Vec(" << v.size() << "),";
   os << " {";
