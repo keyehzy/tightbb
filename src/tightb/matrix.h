@@ -35,9 +35,9 @@ class Matrix {
     }
   };
 
-  [[nodiscard]] T const& get(std::size_t i, std::size_t j) const;
+  [[nodiscard]] T const& at(std::size_t i, std::size_t j) const;
 
-  T& get(std::size_t i, std::size_t j);
+  T& at(std::size_t i, std::size_t j);
 
   Matrix<T, W, H> operator+(Matrix<T, W, H> const& m) const;
 
@@ -46,6 +46,8 @@ class Matrix {
   bool operator==(Matrix<T, W, H> const& m) const;
 
   bool operator!=(Matrix<T, W, H> const& m) const;
+
+  std::array<std::array<T, W>, H> const& data() const { return this->data_; }
 
   template <typename U>
   Matrix<T, W, H> operator*(U p) const;
@@ -62,12 +64,12 @@ class Matrix {
 };
 
 template <typename T, std::size_t W, std::size_t H>
-T const& Matrix<T, W, H>::get(std::size_t i, std::size_t j) const {
+T const& Matrix<T, W, H>::at(std::size_t i, std::size_t j) const {
   return this->data_.at(i).at(j);
 }
 
 template <typename T, std::size_t W, std::size_t H>
-T& Matrix<T, W, H>::get(std::size_t i, std::size_t j) {
+T& Matrix<T, W, H>::at(std::size_t i, std::size_t j) {
   return this->data_.at(i).at(j);
 }
 
@@ -76,7 +78,7 @@ Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
   Matrix<T, W, H> new_m{};
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
-      new_m.get(i, j) = this->get(i, j) + m.get(i, j);
+      new_m.at(i, j) = this->at(i, j) + m.at(i, j);
     }
   }
   return new_m;
@@ -87,7 +89,7 @@ Matrix<T, W, H> Matrix<T, W, H>::operator-(const Matrix<T, W, H>& m) const {
   Matrix<T, W, H> new_m{};
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
-      new_m.get(i, j) = this->get(i, j) - m.get(i, j);
+      new_m.at(i, j) = this->at(i, j) - m.at(i, j);
     }
   }
   return new_m;
@@ -96,7 +98,7 @@ template <typename T, std::size_t W, std::size_t H>
 bool Matrix<T, W, H>::operator==(const Matrix<T, W, H>& m) const {
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
-      if (this->get(i, j) != m.get(i, j)) return false;
+      if (this->at(i, j) != m.at(i, j)) return false;
     }
   }
   return true;
@@ -112,7 +114,7 @@ Matrix<T, W, H> Matrix<T, W, H>::operator*(U p) const {
   Matrix<T, W, H> new_m{};
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
-      new_m.get(i, j) = p * this->get(i, j);
+      new_m.at(i, j) = p * this->at(i, j);
     }
   }
   return new_m;

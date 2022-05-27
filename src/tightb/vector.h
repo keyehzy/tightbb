@@ -52,7 +52,7 @@ class Vec {
 
   double dot(Vec<T, S> const &v) const;
 
-  [[nodiscard]] std::array<T, S> data() const { return this->data_; }
+  [[nodiscard]] std::array<T, S> const &data() const { return this->data_; }
 
   [[nodiscard]] std::size_t size() const { return this->data_.size(); }
 
