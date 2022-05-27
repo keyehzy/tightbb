@@ -79,3 +79,17 @@ TEST(test_vector, vector_projection) {
     EXPECT_THAT(v1.proj(v2).data(), ElementsAre(-0.5, -0.5));
   }
 }
+
+TEST(test_vector, compare_vectors) {
+  {
+    Vec<2> v1{1.0, 2.0};
+    Vec<2> v2{1.0, 2.0};
+    EXPECT_TRUE(v1 == v2);
+  }
+
+  {
+    Vec<2> v1{-1.0, 2.0};
+    Vec<2> v2{1.0, 2.0};
+    EXPECT_FALSE(v1 == v2);
+  }
+}

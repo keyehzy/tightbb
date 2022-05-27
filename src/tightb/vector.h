@@ -34,6 +34,10 @@ public:
 
     Vec<S> operator-(Vec<S> const &v) const;
 
+    bool operator==(Vec<S> const &v) const;
+
+    bool operator!=(Vec<S> const &v) const;
+
     [[nodiscard]] double dot(Vec<S> const &v) const;
 
     [[nodiscard]] double norm() const;
@@ -119,6 +123,21 @@ template<int S>
 Vec<S> Vec<S>::proj(Vec<S> const &v) const {
   double scalar_projection = this->dot(v) / v.dot(v);
   return scalar_projection * v;
+}
+
+template<int S>
+bool Vec<S>::operator==(const Vec<S> &v) const {
+  for (int i = 0; i < S; i++) {
+    if (this->data_[i] != v[i])
+      return false;
+    return true;
+  }
+}
+
+template<int S>
+bool Vec<S>::operator!=(const Vec<S> &v) const {
+  bool ok = *this == v;
+  return !ok;
 }
 
 #endif //TIGHTB_VECTOR_H
