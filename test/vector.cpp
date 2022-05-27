@@ -93,3 +93,10 @@ TEST(test_vector, compare_vectors) {
     EXPECT_FALSE(v1 == v2);
   }
 }
+
+TEST(test_vector, vector_ostream) {
+  std::stringstream ss;
+  Vec<2> v{1.0, 2.0};
+  ss << v;
+  EXPECT_EQ(ss.str(), "[Vec(2), {1, 2}]");
+}

@@ -18,6 +18,7 @@
 #define TIGHTB_VECTOR_H
 
 #include <array>
+#include <ostream>
 
 template<int S>
 class Vec {
@@ -47,6 +48,8 @@ public:
     Vec<S> proj(Vec<S> const &v) const;
 
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
+
+    [[nodiscard]] int size() const { return this->data_.size(); }
 
 private:
     std::vector<double> data_;
@@ -138,6 +141,19 @@ template<int S>
 bool Vec<S>::operator!=(const Vec<S> &v) const {
   bool ok = *this == v;
   return !ok;
+}
+
+template<int S>
+std::ostream &operator<<(std::ostream &os, Vec<S> const &v) {
+  os << "[Vec(" << v.size() << "),";
+  os << " {";
+  for (int i = 0; i < v.size(); i++) {
+    os << v[i];
+    if (i != v.size() - 1)
+      os << ", ";
+  }
+  os << "}]";
+  return os;
 }
 
 #endif //TIGHTB_VECTOR_H
