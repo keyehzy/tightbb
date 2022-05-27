@@ -23,12 +23,25 @@ TEST(test_matrix, declaration) {
 }
 
 TEST(test_matrix, accessor) {
-  Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
-  EXPECT_EQ(m.at(0, 0), 1.0);
-  EXPECT_EQ(m.at(0, 1), 2.0);
-  EXPECT_EQ(m.at(1, 0), 3.0);
-  EXPECT_EQ(m.at(1, 1), 4.0);
-  EXPECT_ANY_THROW(m.at(2, 2));
+  {
+    Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
+    EXPECT_EQ(m.at(0, 0), 1.0);
+    EXPECT_EQ(m.at(0, 1), 2.0);
+    EXPECT_EQ(m.at(1, 0), 3.0);
+    EXPECT_EQ(m.at(1, 1), 4.0);
+    EXPECT_ANY_THROW(m.at(2, 2));
+  }
+
+  {
+    Matrix<double, 2, 3> m{{1.0, 2.0, 3.0}, {3.0, 4.0, 5.0}};
+    EXPECT_EQ(m.at(0, 0), 1.0);
+    EXPECT_EQ(m.at(0, 1), 2.0);
+    EXPECT_EQ(m.at(0, 2), 3.0);
+    EXPECT_EQ(m.at(1, 0), 3.0);
+    EXPECT_EQ(m.at(1, 1), 4.0);
+    EXPECT_EQ(m.at(1, 2), 5.0);
+    EXPECT_ANY_THROW(m.at(2, 3));
+  }
 }
 
 TEST(test_matrix, add_matrices) {
@@ -57,6 +70,7 @@ TEST(test_matrix, comparison_between_matrices) {
     Matrix<double, 2, 2> m2{{1.0, 2.0}, {3.0, 4.0}};
     EXPECT_TRUE(m1 == m2);
   }
+
   {
     Matrix<double, 2, 2> m1{{1.0, 3.0}, {3.0, 4.0}};
     Matrix<double, 2, 2> m2{{1.0, 2.0}, {3.0, 4.0}};
@@ -73,6 +87,7 @@ TEST(test_matrix, product_of_matrix_by_scalar) {
     EXPECT_EQ(pm.at(1, 0), 6.0);
     EXPECT_EQ(pm.at(1, 1), 8.0);
   }
+
   {
     Matrix<double, 2, 2> mp = m * 2.0;
     EXPECT_EQ(mp.at(0, 0), 2.0);
@@ -80,4 +95,10 @@ TEST(test_matrix, product_of_matrix_by_scalar) {
     EXPECT_EQ(mp.at(1, 0), 6.0);
     EXPECT_EQ(mp.at(1, 1), 8.0);
   }
+}
+
+TEST(test_matrix, dimensions) {
+  Matrix<double, 2, 3> m{{1.0, 2.0, 3.0}, {3.0, 4.0, 5.0}};
+  EXPECT_EQ(m.rows(), 2);
+  EXPECT_EQ(m.cols(), 3);
 }

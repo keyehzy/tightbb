@@ -21,7 +21,7 @@
 
 #include <array>
 
-template <typename T, std::size_t W, std::size_t H>
+template <typename T, std::size_t H, std::size_t W>
 class Matrix {
  public:
   Matrix() = default;
@@ -39,18 +39,22 @@ class Matrix {
 
   T& at(std::size_t i, std::size_t j);
 
-  Matrix<T, W, H> operator+(Matrix<T, W, H> const& m) const;
+  Matrix<T, H, W> operator+(Matrix<T, H, W> const& m) const;
 
-  Matrix<T, W, H> operator-(Matrix<T, W, H> const& m) const;
+  Matrix<T, H, W> operator-(Matrix<T, H, W> const& m) const;
 
-  bool operator==(Matrix<T, W, H> const& m) const;
+  bool operator==(Matrix<T, H, W> const& m) const;
 
-  bool operator!=(Matrix<T, W, H> const& m) const;
+  bool operator!=(Matrix<T, H, W> const& m) const;
 
   std::array<std::array<T, W>, H> const& data() const { return this->data_; }
 
   template <typename U>
-  Matrix<T, W, H> operator*(U p) const;
+  Matrix<T, H, W> operator*(U p) const;
+
+  [[nodiscard]] std::size_t rows() const { return H; }
+
+  [[nodiscard]] std::size_t cols() const { return W; }
 
  private:
   template <std::size_t... i>
@@ -63,19 +67,19 @@ class Matrix {
   std::array<std::array<T, W>, H> data_;
 };
 
-template <typename T, std::size_t W, std::size_t H>
-T const& Matrix<T, W, H>::at(std::size_t i, std::size_t j) const {
+template <typename T, std::size_t H, std::size_t W>
+T const& Matrix<T, H, W>::at(std::size_t i, std::size_t j) const {
   return this->data_.at(i).at(j);
 }
 
-template <typename T, std::size_t W, std::size_t H>
-T& Matrix<T, W, H>::at(std::size_t i, std::size_t j) {
+template <typename T, std::size_t H, std::size_t W>
+T& Matrix<T, H, W>::at(std::size_t i, std::size_t j) {
   return this->data_.at(i).at(j);
 }
 
-template <typename T, std::size_t W, std::size_t H>
-Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
-  Matrix<T, W, H> new_m{};
+template <typename T, std::size_t H, std::size_t W>
+Matrix<T, H, W> Matrix<T, H, W>::operator+(const Matrix<T, H, W>& m) const {
+  Matrix<T, H, W> new_m{};
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
       new_m.at(i, j) = this->at(i, j) + m.at(i, j);
@@ -84,9 +88,9 @@ Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
   return new_m;
 }
 
-template <typename T, std::size_t W, std::size_t H>
-Matrix<T, W, H> Matrix<T, W, H>::operator-(const Matrix<T, W, H>& m) const {
-  Matrix<T, W, H> new_m{};
+template <typename T, std::size_t H, std::size_t W>
+Matrix<T, H, W> Matrix<T, H, W>::operator-(const Matrix<T, H, W>& m) const {
+  Matrix<T, H, W> new_m{};
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
       new_m.at(i, j) = this->at(i, j) - m.at(i, j);
@@ -94,8 +98,8 @@ Matrix<T, W, H> Matrix<T, W, H>::operator-(const Matrix<T, W, H>& m) const {
   }
   return new_m;
 }
-template <typename T, std::size_t W, std::size_t H>
-bool Matrix<T, W, H>::operator==(const Matrix<T, W, H>& m) const {
+template <typename T, std::size_t H, std::size_t W>
+bool Matrix<T, H, W>::operator==(const Matrix<T, H, W>& m) const {
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
       if (this->at(i, j) != m.at(i, j)) return false;
@@ -103,15 +107,15 @@ bool Matrix<T, W, H>::operator==(const Matrix<T, W, H>& m) const {
   }
   return true;
 }
-template <typename T, std::size_t W, std::size_t H>
-bool Matrix<T, W, H>::operator!=(const Matrix<T, W, H>& m) const {
+template <typename T, std::size_t H, std::size_t W>
+bool Matrix<T, H, W>::operator!=(const Matrix<T, H, W>& m) const {
   bool ok = *this == m;
   return !ok;
 }
-template <typename T, std::size_t W, std::size_t H>
+template <typename T, std::size_t H, std::size_t W>
 template <typename U>
-Matrix<T, W, H> Matrix<T, W, H>::operator*(U p) const {
-  Matrix<T, W, H> new_m{};
+Matrix<T, H, W> Matrix<T, H, W>::operator*(U p) const {
+  Matrix<T, H, W> new_m{};
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
       new_m.at(i, j) = p * this->at(i, j);
@@ -120,8 +124,8 @@ Matrix<T, W, H> Matrix<T, W, H>::operator*(U p) const {
   return new_m;
 }
 
-template <typename T, std::size_t W, std::size_t H, typename U>
-Matrix<T, W, H> operator*(U p, Matrix<T, W, H> m) {
+template <typename T, std::size_t H, std::size_t W, typename U>
+Matrix<T, H, W> operator*(U p, Matrix<T, H, W> m) {
   return m * p;
 }
 
