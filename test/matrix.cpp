@@ -63,3 +63,21 @@ TEST(test_matrix, comparison_between_matrices) {
     EXPECT_TRUE(m1 != m2);
   }
 }
+
+TEST(test_matrix, product_of_matrix_by_scalar) {
+  Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
+  {
+    Matrix<double, 2, 2> pm = 2.0 * m;
+    EXPECT_EQ(pm.get(0, 0), 2.0);
+    EXPECT_EQ(pm.get(0, 1), 4.0);
+    EXPECT_EQ(pm.get(1, 0), 6.0);
+    EXPECT_EQ(pm.get(1, 1), 8.0);
+  }
+  {
+    Matrix<double, 2, 2> mp = m * 2.0;
+    EXPECT_EQ(mp.get(0, 0), 2.0);
+    EXPECT_EQ(mp.get(0, 1), 4.0);
+    EXPECT_EQ(mp.get(1, 0), 6.0);
+    EXPECT_EQ(mp.get(1, 1), 8.0);
+  }
+}

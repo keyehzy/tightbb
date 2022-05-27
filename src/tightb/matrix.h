@@ -47,6 +47,9 @@ class Matrix {
 
   bool operator!=(Matrix<T, W, H> const& m) const;
 
+  template <typename U>
+  Matrix<T, W, H> operator*(U p) const;
+
  private:
   template <std::size_t... i>
   std::array<T, W> make_array_impl(std::initializer_list<T> list,
@@ -102,6 +105,22 @@ template <typename T, std::size_t W, std::size_t H>
 bool Matrix<T, W, H>::operator!=(const Matrix<T, W, H>& m) const {
   bool ok = *this == m;
   return !ok;
+}
+template <typename T, std::size_t W, std::size_t H>
+template <typename U>
+Matrix<T, W, H> Matrix<T, W, H>::operator*(U p) const {
+  Matrix<T, W, H> new_m{};
+  for (int i = 0; i < H; i++) {
+    for (int j = 0; j < W; j++) {
+      new_m.get(i, j) = p * this->get(i, j);
+    }
+  }
+  return new_m;
+}
+
+template <typename T, std::size_t W, std::size_t H, typename U>
+Matrix<T, W, H> operator*(U p, Matrix<T, W, H> m) {
+  return m * p;
 }
 
 #endif  // TIGHTB_MATRIX_H
