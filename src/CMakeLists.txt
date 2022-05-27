@@ -22,6 +22,13 @@ set_target_properties(tightb PROPERTIES RUNTIME_OUTPUT_DIRECTORY ..)
 target_link_libraries(tightb PRIVATE tightb-lib)
 add_library(
         tightb-lib
+        assert.cpp
+        graph.cpp
+        matrix.cpp
+        tightb/assert.h
+        tightb/graph.h
+        tightb/matrix.h
+        tightb/vector.h
         vector.cpp
-        tightb/vector.h graph.cpp tightb/graph.h assert.cpp tightb/assert.h)
+)
 target_include_directories(tightb-lib PUBLIC .)

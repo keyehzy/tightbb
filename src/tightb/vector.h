@@ -27,7 +27,7 @@ template <std::size_t S>
 class Vec {
  public:
   Vec() = default;
-  Vec(std::initializer_list<double> list)
+  Vec(const std::initializer_list<double> &list)
       : Vec(list, std::make_index_sequence<S>()) {
     ASSERT(list.size() == S);
   };
@@ -61,7 +61,7 @@ class Vec {
 
  private:
   template <std::size_t... i>
-  Vec(std::initializer_list<double> list, std::index_sequence<i...>)
+  Vec(const std::initializer_list<double> &list, std::index_sequence<i...>)
       : data_({*(list.begin() + i)...}) {}
 
   std::array<double, S> data_;
