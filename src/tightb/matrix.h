@@ -41,6 +41,8 @@ class Matrix {
 
   Matrix<T, W, H> operator+(Matrix<T, W, H> const& m) const;
 
+  Matrix<T, W, H> operator-(Matrix<T, W, H> const& m) const;
+
  private:
   template <std::size_t... i>
   std::array<T, W> make_array_impl(std::initializer_list<T> list,
@@ -71,6 +73,16 @@ Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
   for (int i = 0; i < H; i++) {
     for (int j = 0; j < W; j++) {
       new_m.get(i, j) = this->get(i, j) + m.get(i, j);
+    }
+  }
+  return new_m;
+}
+template <typename T, std::size_t W, std::size_t H>
+Matrix<T, W, H> Matrix<T, W, H>::operator-(const Matrix<T, W, H>& m) const {
+  Matrix<T, W, H> new_m{};
+  for (int i = 0; i < H; i++) {
+    for (int j = 0; j < W; j++) {
+      new_m.get(i, j) = this->get(i, j) - m.get(i, j);
     }
   }
   return new_m;
