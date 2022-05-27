@@ -133,8 +133,8 @@ bool Vec<S>::operator==(const Vec<S> &v) const {
   for (int i = 0; i < S; i++) {
     if (this->data_[i] != v[i])
       return false;
-    return true;
   }
+  return true;
 }
 
 template<int S>
