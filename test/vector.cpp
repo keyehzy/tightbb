@@ -30,3 +30,10 @@ TEST(test_vector, add_two_vectors) {
   Vec<2> sum = v1 + v2;
   EXPECT_THAT(sum.data(), ElementsAre(3.0, 5.0));
 }
+
+TEST(test_vector, subtract_two_vectors) {
+  Vec<2> v1{1.0, 2.0};
+  Vec<2> v2{2.0, 3.0};
+  Vec<2> sub = v1 - v2;
+  EXPECT_THAT(sub.data(), ElementsAre(-1.0, -1.0));
+}

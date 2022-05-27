@@ -30,6 +30,8 @@ public:
 
     Vec<S> operator+(Vec<S> v);
 
+    Vec<S> operator-(Vec<S> v);
+
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
 
 private:
@@ -48,6 +50,17 @@ Vec<S> Vec<S>::operator+(Vec<S> v) {
 
   for (int i = 0; i < S; i++) {
     new_v[i] = this->data_[i] + v[i];
+  }
+
+  return new_v;
+}
+
+template<int S>
+Vec<S> Vec<S>::operator-(Vec<S> v) {
+  Vec<S> new_v(S);
+
+  for (int i = 0; i < S; i++) {
+    new_v[i] = this->data_[i] - v[i];
   }
 
   return new_v;
