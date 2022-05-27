@@ -32,6 +32,9 @@ public:
 
     Vec<S> operator-(Vec<S> v);
 
+    double operator*(Vec<S> v);
+
+
     [[nodiscard]] std::vector<double> data() const { return this->data_; }
 
 private:
@@ -64,6 +67,17 @@ Vec<S> Vec<S>::operator-(Vec<S> v) {
   }
 
   return new_v;
+}
+
+template<int S>
+double Vec<S>::operator*(Vec<S> v) {
+  double dot = 0.0;
+
+  for (int i = 0; i < S; i++) {
+    dot += this->data_[i] + v[i];
+  }
+
+  return dot;
 }
 
 #endif //TIGHTB_VECTOR_H

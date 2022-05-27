@@ -37,3 +37,11 @@ TEST(test_vector, subtract_two_vectors) {
   Vec<2> sub = v1 - v2;
   EXPECT_THAT(sub.data(), ElementsAre(-1.0, -1.0));
 }
+
+// TODO(keyehzy): this operation can be implemented using BLAS
+TEST(test_vector, dot_product_of_two_vectors) {
+  Vec<2> v1{1.0, 2.0};
+  Vec<2> v2{2.0, 3.0};
+  double dot = v1 * v2;
+  EXPECT_THAT(dot, 8.0);
+}
