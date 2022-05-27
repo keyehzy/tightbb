@@ -18,12 +18,24 @@
 #include <gtest/gtest.h>
 #include <tightb/matrix.h>
 
-TEST(test_matrix, declaration) { Matrix<2, 2> m{{1.0, 2.0}, {3.0, 4.0}}; }
+TEST(test_matrix, declaration) {
+  Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
+}
 
 TEST(test_matrix, acessor) {
-  Matrix<2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
+  Matrix<double, 2, 2> m{{1.0, 2.0}, {3.0, 4.0}};
   EXPECT_EQ(m.get(0, 0), 1.0);
   EXPECT_EQ(m.get(0, 1), 2.0);
   EXPECT_EQ(m.get(1, 0), 3.0);
   EXPECT_EQ(m.get(1, 1), 4.0);
+}
+
+TEST(test_matrix, add_matrices) {
+  Matrix<double, 2, 2> m1{{1.0, 2.0}, {3.0, 4.0}};
+  Matrix<double, 2, 2> m2{{4.0, 2.0}, {3.0, 1.0}};
+  Matrix<double, 2, 2> res = m1 + m2;
+  EXPECT_EQ(res.get(0, 0), 5.0);
+  EXPECT_EQ(res.get(0, 1), 4.0);
+  EXPECT_EQ(res.get(1, 0), 6.0);
+  EXPECT_EQ(res.get(1, 1), 5.0);
 }

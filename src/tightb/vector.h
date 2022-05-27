@@ -23,11 +23,11 @@
 #include <cmath>
 #include <ostream>
 
-template <std::size_t S>
+template <typename T, std::size_t S>
 class Vec {
  public:
   Vec() = default;
-  Vec(const std::initializer_list<double> &list)
+  Vec(const std::initializer_list<T> &list)
       : Vec(list, std::make_index_sequence<S>()) {
     ASSERT(list.size() == S);
   };
@@ -35,53 +35,50 @@ class Vec {
   template <typename... U>
   explicit Vec(U &&...u) : data_({std::forward<U>(u)...}) {}
 
-  double &operator[](int i);
+  T &operator[](int i);
 
-  double const &operator[](int i) const;
+  T const &operator[](int i) const;
 
-  Vec<S> operator+(Vec<S> const &v) const;
+  Vec<T, S> operator+(Vec<T, S> const &v) const;
 
-  Vec<S> operator-(Vec<S> const &v) const;
+  Vec<T, S> operator-(Vec<T, S> const &v) const;
 
-  Vec<S> operator*(double p) const;
+  template <typename U>
+  Vec<T, S> operator*(U p) const;
 
-  bool operator==(Vec<S> const &v) const;
+  bool operator==(Vec<T, S> const &v) const;
 
-  bool operator!=(Vec<S> const &v) const;
+  bool operator!=(Vec<T, S> const &v) const;
 
-  [[nodiscard]] double dot(Vec<S> const &v) const;
+  double dot(Vec<T, S> const &v) const;
 
-  [[nodiscard]] double norm() const;
-
-  Vec<S> proj(Vec<S> const &v) const;
-
-  [[nodiscard]] std::array<double, S> data() const { return this->data_; }
+  [[nodiscard]] std::array<T, S> data() const { return this->data_; }
 
   [[nodiscard]] std::size_t size() const { return this->data_.size(); }
 
  private:
   template <std::size_t... i>
-  Vec(const std::initializer_list<double> &list, std::index_sequence<i...>)
+  Vec(const std::initializer_list<T> &list, std::index_sequence<i...>)
       : data_({*(list.begin() + i)...}) {}
 
-  std::array<double, S> data_;
+  std::array<T, S> data_;
 };
 
-template <std::size_t S>
-double &Vec<S>::operator[](int i) {
+template <typename T, std::size_t S>
+T &Vec<T, S>::operator[](int i) {
   ASSERT(i >= 0 && i < S);
   return this->data_[i];
 }
 
-template <std::size_t S>
-double const &Vec<S>::operator[](int i) const {
+template <typename T, std::size_t S>
+T const &Vec<T, S>::operator[](int i) const {
   ASSERT(i >= 0 && i < S);
   return this->data_[i];
 }
 
-template <std::size_t S>
-Vec<S> Vec<S>::operator+(Vec<S> const &v) const {
-  Vec<S> new_v{};
+template <typename T, std::size_t S>
+Vec<T, S> Vec<T, S>::operator+(Vec<T, S> const &v) const {
+  Vec<T, S> new_v{};
 
   for (int i = 0; i < S; i++) {
     new_v[i] = this->data_[i] + v[i];
@@ -90,9 +87,9 @@ Vec<S> Vec<S>::operator+(Vec<S> const &v) const {
   return new_v;
 }
 
-template <std::size_t S>
-Vec<S> Vec<S>::operator-(Vec<S> const &v) const {
-  Vec<S> new_v{};
+template <typename T, std::size_t S>
+Vec<T, S> Vec<T, S>::operator-(Vec<T, S> const &v) const {
+  Vec<T, S> new_v{};
 
   for (int i = 0; i < S; i++) {
     new_v[i] = this->data_[i] - v[i];
@@ -101,8 +98,8 @@ Vec<S> Vec<S>::operator-(Vec<S> const &v) const {
   return new_v;
 }
 
-template <std::size_t S>
-double Vec<S>::dot(Vec<S> const &v) const {
+template <typename T, std::size_t S>
+double Vec<T, S>::dot(Vec<T, S> const &v) const {
   double dot = 0.0;
 
   for (int i = 0; i < S; i++) {
@@ -112,15 +109,10 @@ double Vec<S>::dot(Vec<S> const &v) const {
   return dot;
 }
 
-template <std::size_t S>
-double Vec<S>::norm() const {
-  double dot = this->dot(*this);
-  return std::sqrt(dot);
-}
-
-template <std::size_t S>
-Vec<S> Vec<S>::operator*(double p) const {
-  Vec<S> new_v{};
+template <typename T, std::size_t S>
+template <typename U>
+Vec<T, S> Vec<T, S>::operator*(U p) const {
+  Vec<T, S> new_v{};
 
   for (int i = 0; i < S; i++) {
     new_v[i] = p * this->data_[i];
@@ -129,33 +121,27 @@ Vec<S> Vec<S>::operator*(double p) const {
   return new_v;
 }
 
-template <std::size_t S>
-Vec<S> operator*(double p, Vec<S> const &v) {
+template <typename T, typename U, std::size_t S>
+Vec<T, S> operator*(U p, Vec<T, S> const &v) {
   return v * p;
 }
 
-template <std::size_t S>
-Vec<S> Vec<S>::proj(Vec<S> const &v) const {
-  double scalar_projection = this->dot(v) / v.dot(v);
-  return scalar_projection * v;
-}
-
-template <std::size_t S>
-bool Vec<S>::operator==(const Vec<S> &v) const {
+template <typename T, std::size_t S>
+bool Vec<T, S>::operator==(const Vec<T, S> &v) const {
   for (int i = 0; i < S; i++) {
     if (this->data_[i] != v[i]) return false;
   }
   return true;
 }
 
-template <std::size_t S>
-bool Vec<S>::operator!=(const Vec<S> &v) const {
+template <typename T, std::size_t S>
+bool Vec<T, S>::operator!=(const Vec<T, S> &v) const {
   bool ok = *this == v;
   return !ok;
 }
 
-template <std::size_t S>
-std::ostream &operator<<(std::ostream &os, Vec<S> const &v) {
+template <typename T, std::size_t S>
+std::ostream &operator<<(std::ostream &os, Vec<T, S> const &v) {
   os << "[Vec(" << v.size() << "),";
   os << " {";
   for (int i = 0; i < v.size(); i++) {

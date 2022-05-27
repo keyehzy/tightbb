@@ -21,44 +21,59 @@
 
 #include <array>
 
-template <std::size_t W, std::size_t H>
+template <typename T, std::size_t W, std::size_t H>
 class Matrix {
  public:
-  Matrix(std::initializer_list<std::initializer_list<double>> list) {
+  Matrix() = default;
+
+  Matrix(std::initializer_list<std::initializer_list<T>> list) {
     ASSERT(list.size() == H);
 
     for (int i = 0; i < H; i++) {
-      std::initializer_list<double> L = *(list.begin() + i);
+      std::initializer_list<T> L = *(list.begin() + i);
       data_[i] = make_array_impl(L, std::make_index_sequence<W>());
     }
   };
 
-  [[nodiscard]] double const& get(std::size_t i, std::size_t j) const;
-  double& get(std::size_t i, std::size_t j);
+  [[nodiscard]] T const& get(std::size_t i, std::size_t j) const;
+
+  T& get(std::size_t i, std::size_t j);
+
+  Matrix<T, W, H> operator+(Matrix<T, W, H> const& m) const;
 
  private:
   template <std::size_t... i>
-  std::array<double, W> make_array_impl(std::initializer_list<double> list,
-                                        std::index_sequence<i...>) {
+  std::array<T, W> make_array_impl(std::initializer_list<T> list,
+                                   std::index_sequence<i...>) {
     ASSERT(list.size() == W);
-    return std::array<double, W>({*(list.begin() + i)...});
+    return std::array<T, W>({*(list.begin() + i)...});
   }
 
-  std::array<std::array<double, W>, H> data_;
+  std::array<std::array<T, W>, H> data_;
 };
 
-template <std::size_t W, std::size_t H>
-double const& Matrix<W, H>::get(std::size_t i, std::size_t j) const {
+template <typename T, std::size_t W, std::size_t H>
+T const& Matrix<T, W, H>::get(std::size_t i, std::size_t j) const {
   ASSERT(i >= 0 && i < H);
   ASSERT(j >= 0 && j < W);
   return this->data_[i][j];
 }
 
-template <std::size_t W, std::size_t H>
-double& Matrix<W, H>::get(std::size_t i, std::size_t j) {
+template <typename T, std::size_t W, std::size_t H>
+T& Matrix<T, W, H>::get(std::size_t i, std::size_t j) {
   ASSERT(i >= 0 && i < H);
   ASSERT(j >= 0 && j < W);
   return this->data_[i][j];
+}
+template <typename T, std::size_t W, std::size_t H>
+Matrix<T, W, H> Matrix<T, W, H>::operator+(const Matrix<T, W, H>& m) const {
+  Matrix<T, W, H> new_m{};
+  for (int i = 0; i < H; i++) {
+    for (int j = 0; j < W; j++) {
+      new_m.get(i, j) = this->get(i, j) + m.get(i, j);
+    }
+  }
+  return new_m;
 }
 
 #endif  // TIGHTB_MATRIX_H
